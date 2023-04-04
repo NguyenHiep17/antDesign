@@ -1,0 +1,52 @@
+<nz-card
+  style="width: 100%"
+  nzTitle="Lương nhân viên"
+>
+  <nz-table #editRowTable [nzData]="listOfData">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Lương</th>
+        <th>Action</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of editRowTable.data">
+        <ng-container *ngIf="!editCache[data.key].edit; else editTemplate">
+          <td>{{ data.key }}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.Workday * 50}}$</td>
+          <td><a (click)="startEdit(data.key)">Fix</a></td>
+          <td>
+            <a
+              nz-popconfirm
+              nzPopconfirmTitle="Sure to delete?"
+              (nzOnConfirm)="deleteRow(data.key)"
+              >Delete</a
+            >
+          </td>
+        </ng-container>
+        <ng-template #editTemplate>
+          <td>{{ data.key }}</td>
+          <td><input type="text" nz-input [(ngModel)]="editCache[data.key].data.name"/></td>
+          <td><input type="text" nz-input [(ngModel)]="editCache[data.key].data.Workday"/></td>
+
+          <td>
+            <a (click)="saveEdit(data.key)" class="save">Save</a>
+            <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?" (nzOnConfirm)="cancelEdit(data.key)">Cancel</a>
+          </td>
+          <td>
+            <a
+              nz-popconfirm
+              nzPopconfirmTitle="Sure to delete?"
+              (nzOnConfirm)="deleteRow(data.key)"
+              >Delete</a
+            >
+          </td>
+        </ng-template>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
